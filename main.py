@@ -202,11 +202,16 @@ def main(depth: int = 1, top: int = 10, dir: str = None, rebuild_cache: bool = F
     if os.path.exists(cache) and not rebuild_cache:
         dirtree = DirTree.from_cache(cache)
     else:
+        print("Building cache")
         dirtree = DirTree(os.environ['HOME'], False, root=True)
         dirtree.to_cache(cache)
+        print("Finished building cache")
     if dir is not None:
         dirtree = dirtree.find(dir)
-    dirtree.print(depth=depth, top=top, t=0)
+    if dirtree is None:
+        print("An error occurred! That directory is possibly invalid. Please try again with a different --dir flag")
+    else:
+        dirtree.print(depth=depth, top=top, t=0)
 
 
 
